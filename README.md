@@ -2,8 +2,6 @@
 
 Un'app social stile Twitter costruita con il MERN stack (MongoDB, Express, React, Node.js) usando TypeScript, Redux Toolkit e Tailwind CSS.
 
-## 🚀 Cosa fa
-
 ### Autenticazione
 - Registrazione e login utenti
 - Autenticazione JWT con access token e refresh token
@@ -32,7 +30,6 @@ Un'app social stile Twitter costruita con il MERN stack (MongoDB, Express, React
 - Styling con Tailwind CSS
 - Interfaccia completamente in italiano 🇮🇹
 
-## 🛠️ Tecnologie
 
 ### Frontend
 - **React 18** - Libreria UI
@@ -56,7 +53,7 @@ Un'app social stile Twitter costruita con il MERN stack (MongoDB, Express, React
 - **CORS** - Cross-origin
 - **express-rate-limit** - Rate limiting
 
-## 📁 Struttura Progetto
+## Struttura Progetto
 
 ```
 web-app/
@@ -304,5 +301,4 @@ Test manuali consigliati per:
 Questo progetto è open source e disponibile sotto la MIT License.
 
 ## 👤 Autore
-
 Progetto personale per imparare e mettere in pratica le competenze full-stack con MERN.
