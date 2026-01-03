@@ -13,11 +13,11 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white rounded-2xl shadow-lg border border-gray-100 p-6 ${
-        hover ? 'card-hover' : ''
-      } ${className}`}
+      className={`card bg-base-100 shadow-md border border-base-300/50 ${hover ? 'hover:shadow-xl hover:border-base-300 transition-all duration-200 cursor-pointer' : 'transition-shadow duration-200'} ${className}`}
     >
-      {children}
+      <div className="card-body p-4 md:p-5">
+        {children}
+      </div>
     </div>
   );
 };

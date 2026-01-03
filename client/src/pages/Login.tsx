@@ -51,13 +51,13 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[70vh] py-12">
+    <div className="flex justify-center items-center min-h-[70vh] py-8 md:py-12 px-4">
       <Card className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gradient mb-2">Bentornato</h1>
-          <p className="text-gray-600">Accedi al tuo account</p>
+        <div className="text-center mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">Bentornato</h1>
+          <p className="text-base-content/70 text-sm md:text-base">Accedi al tuo account</p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Email"
             type="email"
@@ -78,8 +78,11 @@ const Login: React.FC = () => {
             placeholder="Inserisci la tua password"
           />
           {error && (
-            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-3">
-              <p className="text-red-600 text-sm font-medium">{error}</p>
+            <div className="alert alert-error">
+              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{error}</span>
             </div>
           )}
           <Button
@@ -91,11 +94,11 @@ const Login: React.FC = () => {
             Accedi
           </Button>
         </form>
-        <p className="mt-6 text-center text-gray-600">
+        <p className="mt-5 text-center text-base-content/70 text-sm md:text-base">
           Non hai un account?{' '}
           <Link
             to="/register"
-            className="text-blue-600 hover:text-blue-700 font-semibold hover:underline transition-colors"
+            className="link link-primary font-semibold"
           >
             Registrati
           </Link>

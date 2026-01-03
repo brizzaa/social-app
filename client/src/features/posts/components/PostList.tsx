@@ -29,9 +29,9 @@ export const PostList: React.FC<PostListProps> = ({
 
   if (posts.length === 0) {
     return (
-      <Card className="text-center py-12">
+      <Card className="text-center py-8 md:py-12">
         <svg
-          className="w-16 h-16 mx-auto text-gray-400 mb-4"
+          className="w-12 h-12 md:w-16 md:h-16 mx-auto text-base-content/40 mb-3 md:mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -43,7 +43,7 @@ export const PostList: React.FC<PostListProps> = ({
             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
           />
         </svg>
-        <p className="text-gray-600 font-medium text-lg">
+        <p className="text-base-content/70 font-medium text-base md:text-lg px-4">
           Nessun post ancora. Segui alcuni utenti per vedere i loro post!
         </p>
       </Card>

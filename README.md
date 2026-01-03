@@ -1,44 +1,45 @@
 # Social Network App
 
-A production-ready Twitter-like social network built with the MERN stack (MongoDB, Express, React, Node.js) with TypeScript, Redux Toolkit, and Tailwind CSS.
+Un'app social stile Twitter costruita con il MERN stack (MongoDB, Express, React, Node.js) usando TypeScript, Redux Toolkit e Tailwind CSS.
 
-## 🚀 Features
+## 🚀 Cosa fa
 
-### Authentication & Authorization
-- User registration and login
-- JWT-based authentication (access + refresh tokens)
-- Protected routes
-- Secure password hashing with bcrypt
-- Token refresh mechanism
+### Autenticazione
+- Registrazione e login utenti
+- Autenticazione JWT con access token e refresh token
+- Route protette
+- Password hashate con bcrypt
+- Refresh automatico dei token
 
-### User Features
-- View public user profiles
-- Follow/unfollow users
-- User profile with followers/following counts
+### Funzionalità Utenti
+- Visualizza profili pubblici
+- Segui/smetti di seguire utenti
+- Profilo con contatori follower/seguendo
 
-### Post Features
-- Create posts (max 280 characters)
-- Delete own posts
-- Like/unlike posts
-- View single post
-- Home feed with posts from followed users
-- Infinite scroll pagination
-- Real-time like updates
+### Funzionalità Post
+- Crea post (max 280 caratteri)
+- Elimina i tuoi post
+- Metti/togli like ai post
+- Visualizza singolo post
+- Feed home con post degli utenti seguiti
+- Scroll infinito con paginazione
+- Aggiornamenti like in tempo reale
 
 ### UI/UX
-- Modern, responsive design (mobile-first)
-- Loading states and error handling
-- Clean, intuitive interface
-- Tailwind CSS styling
+- Design moderno e responsive (mobile-first)
+- Stati di caricamento e gestione errori
+- Interfaccia pulita e intuitiva
+- Styling con Tailwind CSS
+- Interfaccia completamente in italiano 🇮🇹
 
-## 🛠️ Tech Stack
+## 🛠️ Tecnologie
 
 ### Frontend
-- **React 18** - UI library
+- **React 18** - Libreria UI
 - **TypeScript** - Type safety
-- **Redux Toolkit** - State management
+- **Redux Toolkit** - Gestione stato
 - **React Router** - Routing
-- **Axios** - HTTP client
+- **Axios** - Client HTTP
 - **Tailwind CSS** - Styling
 - **Vite** - Build tool
 
@@ -48,58 +49,50 @@ A production-ready Twitter-like social network built with the MERN stack (MongoD
 - **TypeScript** - Type safety
 - **MongoDB** - Database
 - **Mongoose** - ODM
-- **JWT** - Authentication
-- **bcrypt** - Password hashing
-- **Zod** - Validation
-- **Helmet** - Security
-- **CORS** - Cross-origin resource sharing
+- **JWT** - Autenticazione
+- **bcrypt** - Hash password
+- **Zod** - Validazione
+- **Helmet** - Sicurezza
+- **CORS** - Cross-origin
 - **express-rate-limit** - Rate limiting
 
-## 📁 Project Structure
+## 📁 Struttura Progetto
 
 ```
 web-app/
-├── client/                 # React frontend
+├── client/                 # Frontend React
 │   ├── src/
-│   │   ├── features/       # Feature-based modules
-│   │   │   ├── auth/
+│   │   ├── features/       # Moduli per feature
 │   │   │   ├── posts/
 │   │   │   └── users/
-│   │   ├── components/     # Reusable components
-│   │   │   ├── ui/         # UI primitives
-│   │   │   ├── layout/     # Layout components
-│   │   │   └── common/     # Common components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
+│   │   ├── components/     # Componenti riutilizzabili
+│   │   │   ├── ui/         # Componenti UI base
+│   │   │   ├── layout/     # Componenti layout
+│   │   │   └── common/     # Componenti comuni
+│   │   ├── pages/          # Pagine
+│   │   ├── services/       # Servizi API
 │   │   ├── store/          # Redux store
 │   │   ├── hooks/          # Custom hooks
-│   │   ├── types/          # TypeScript types
+│   │   ├── types/            # Tipi TypeScript
 │   │   └── utils/          # Utilities
 │   └── package.json
-├── server/                 # Express backend
+├── server/                 # Backend Express
 │   ├── src/
-│   │   ├── config/         # Configuration
-│   │   ├── models/         # Mongoose models
-│   │   ├── controllers/    # Route controllers
-│   │   ├── services/       # Business logic
-│   │   ├── routes/         # API routes
-│   │   ├── middlewares/    # Express middlewares
+│   │   ├── config/         # Configurazione
+│   │   ├── models/         # Modelli Mongoose
+│   │   ├── controllers/    # Controller route
+│   │   ├── services/       # Logica business
+│   │   ├── routes/         # Route API
+│   │   ├── middlewares/    # Middleware Express
 │   │   ├── utils/          # Utilities
-│   │   ├── app.ts          # Express app
+│   │   ├── app.ts          # App Express
 │   │   └── index.ts        # Entry point
 │   └── package.json
 ├── package.json            # Root package.json
 └── README.md
 ```
 
-### Why This Structure?
-
-- **Monorepo**: Single repository for easier dependency management and code sharing
-- **Feature-based frontend**: `/features` organizes code by domain (auth, posts, users) for better maintainability
-- **Layered backend**: Clear separation between routes, controllers, services, and models enables testability and maintainability
-- **Type safety**: TypeScript across the stack ensures consistency and catches errors early
-
-## 🗄️ Database Schema
+## 🗄️ Schema Database
 
 ### User Model
 ```typescript
@@ -126,59 +119,59 @@ web-app/
 }
 ```
 
-### Indexes
-- User: `username`, `email` (unique indexes)
-- Post: `author`, `createdAt` (compound index for feed queries)
+### Indici
+- User: `username`, `email` (indici unici)
+- Post: `author`, `createdAt` (indice composto per query feed)
 
 ## 🔌 API Routes
 
-### Authentication
+### Autenticazione
 ```
-POST   /api/auth/register     - User registration
-POST   /api/auth/login        - User login
+POST   /api/auth/register     - Registrazione utente
+POST   /api/auth/login        - Login utente
 POST   /api/auth/refresh      - Refresh access token
-POST   /api/auth/logout       - User logout
+POST   /api/auth/logout       - Logout utente
 ```
 
-### Users
+### Utenti
 ```
-GET    /api/users/:id         - Get user profile
-POST   /api/users/:id/follow  - Follow user
-DELETE /api/users/:id/follow  - Unfollow user
+GET    /api/users/:id         - Ottieni profilo utente
+POST   /api/users/:id/follow  - Segui utente
+DELETE /api/users/:id/follow  - Smetti di seguire utente
 ```
 
-### Posts
+### Post
 ```
-GET    /api/posts             - Get feed (paginated)
-GET    /api/posts/:id         - Get single post
-POST   /api/posts             - Create post
-DELETE /api/posts/:id         - Delete own post
+GET    /api/posts             - Ottieni feed (paginato)
+GET    /api/posts/:id         - Ottieni singolo post
+POST   /api/posts             - Crea post
+DELETE /api/posts/:id         - Elimina tuo post
 POST   /api/posts/:id/like    - Like/unlike post
 ```
 
-## 🚦 Getting Started
+## 🚦 Come iniziare
 
-### Prerequisites
+### Prerequisiti
 - Node.js >= 18.0.0
 - npm >= 9.0.0
-- MongoDB (local or MongoDB Atlas)
+- MongoDB (locale o MongoDB Atlas)
 
-### Installation
+### Installazione
 
-1. **Clone the repository**
+1. **Clona il repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/brizzaa/social-app.git
    cd web-app
    ```
 
-2. **Install dependencies**
+2. **Installa le dipendenze**
    ```bash
    npm run install:all
    ```
 
-3. **Setup environment variables**
+3. **Configura le variabili d'ambiente**
 
-   Create `server/.env`:
+   Crea `server/.env`:
    ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/social-network
@@ -188,138 +181,128 @@ POST   /api/posts/:id/like    - Like/unlike post
    CLIENT_URL=http://localhost:3000
    ```
 
-   Create `client/.env`:
+   Crea `client/.env`:
    ```env
    VITE_API_URL=http://localhost:5000/api
    ```
 
-4. **Start MongoDB**
+4. **Avvia MongoDB**
    ```bash
-   # If using local MongoDB
+   # Se usi MongoDB locale
    mongod
    ```
 
-5. **Run the application**
+5. **Avvia l'applicazione**
 
-   Development mode (runs both client and server):
+   Modalità sviluppo (avvia sia client che server):
    ```bash
    npm run dev
    ```
 
-   Or run separately:
+   Oppure avvia separatamente:
    ```bash
-   # Terminal 1 - Server
+   # Terminale 1 - Server
    npm run dev:server
 
-   # Terminal 2 - Client
+   # Terminale 2 - Client
    npm run dev:client
    ```
 
-6. **Access the application**
+6. **Accedi all'applicazione**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
 
-## 🏗️ Architecture Overview
+## 🏗️ Architettura
 
-### Request Flow
+### Flusso Richieste
 
 ```
 Client (React)
   ↓
-Redux Store (State Management)
+Redux Store (Gestione stato)
   ↓
-API Service (Axios with interceptors)
+API Service (Axios con interceptors)
   ↓
 Express Routes
   ↓
-Auth Middleware (JWT verification)
+Auth Middleware (Verifica JWT)
   ↓
 Controllers
   ↓
-Services (Business Logic)
+Services (Logica business)
   ↓
 Mongoose Models
   ↓
 MongoDB Database
 ```
 
-### Authentication Flow
+### Flusso Autenticazione
 
-1. User registers/logs in
-2. Server generates access token (15min) and refresh token (7 days)
-3. Refresh token stored in httpOnly cookie
-4. Access token stored in localStorage and Redux
-5. Access token sent in Authorization header for protected routes
-6. On token expiry, Axios interceptor automatically refreshes token
-7. On refresh failure, user is logged out
+1. Utente si registra/fa login
+2. Server genera access token (15min) e refresh token (7 giorni)
+3. Refresh token salvato in cookie httpOnly
+4. Access token salvato in localStorage e Redux
+5. Access token inviato nell'header Authorization per route protette
+6. Alla scadenza, l'interceptor Axios aggiorna automaticamente il token
+7. Se il refresh fallisce, l'utente viene disconnesso
 
-### State Management
+### Gestione Stato
 
-- **Redux Toolkit** for global state
-- **Auth Slice**: User data, access token, authentication status
-- **UI Slice**: Loading states, error messages
+- **Redux Toolkit** per stato globale
+- **Auth Slice**: Dati utente, access token, stato autenticazione
+- **UI Slice**: Stati di caricamento, messaggi di errore
 
-## 🔒 Security Features
+## 🔒 Sicurezza
 
-- Password hashing with bcrypt (10 salt rounds)
-- JWT tokens with expiration
-- httpOnly cookies for refresh tokens
-- Helmet.js for security headers
-- CORS configuration
-- Rate limiting (100 requests per 15 minutes per IP)
-- Input validation with Zod
-- SQL injection prevention (MongoDB)
-- XSS protection
+- Password hashate con bcrypt (10 salt rounds)
+- Token JWT con scadenza
+- Cookie httpOnly per refresh token
+- Helmet.js per header di sicurezza
+- Configurazione CORS
+- Rate limiting (100 richieste per 15 minuti per IP)
+- Validazione input con Zod
+- Prevenzione SQL injection (MongoDB)
+- Protezione XSS
 
-## 📝 Code Quality
+## 📝 Qualità Codice
 
-- TypeScript for type safety
-- ESLint for code linting
-- Prettier for code formatting
-- Clean architecture principles
-- Separation of concerns
-- Error handling
-- No unused code
-- Meaningful variable names
+- TypeScript per type safety
+- ESLint per linting
+- Prettier per formattazione
+- Principi di clean architecture
+- Separazione delle responsabilità
+- Gestione errori
+- Codice pulito e significativo
 
 ## 🧪 Testing
 
-Manual testing recommended for:
-- Authentication flow (register, login, logout, refresh)
-- CRUD operations (create, read, update, delete posts)
-- Follow/unfollow functionality
-- Like/unlike posts
-- Error scenarios
-- Responsive design
+Test manuali consigliati per:
+- Flusso autenticazione (registrazione, login, logout, refresh)
+- Operazioni CRUD (crea, leggi, aggiorna, elimina post)
+- Funzionalità follow/unfollow
+- Like/unlike post
+- Scenari di errore
+- Design responsive
 
-## 📸 Screenshots
+## 🚀 Miglioramenti Futuri
 
-_Add screenshots of your application here_
-
-## 🚀 Future Improvements
-
-- [ ] Comments on posts
-- [ ] Image upload (Cloudinary integration)
-- [ ] Dark mode toggle
-- [ ] User search functionality
-- [ ] Real-time updates (WebSockets)
-- [ ] Unit and integration tests
-- [ ] Email verification
-- [ ] Password reset functionality
-- [ ] Notifications system
-- [ ] Hashtags and mentions
-- [ ] Post editing
-- [ ] User settings page
+- [ ] Commenti sui post
+- [ ] Upload immagini (integrazione Cloudinary)
+- [ ] Toggle dark mode
+- [ ] Ricerca utenti
+- [ ] Aggiornamenti real-time (WebSockets)
+- [ ] Test unitari e di integrazione
+- [ ] Verifica email
+- [ ] Reset password
+- [ ] Sistema notifiche
+- [ ] Hashtag e menzioni
+- [ ] Modifica post
+- [ ] Pagina impostazioni utente
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+Questo progetto è open source e disponibile sotto la MIT License.
 
-## 👤 Author
+## 👤 Autore
 
-Built as a portfolio project demonstrating full-stack MERN development skills.
-
----
-
-**Note**: This is a production-ready template suitable for HR recruiters evaluating junior/mid-level web developer candidates. The code follows best practices, clean architecture principles, and production-ready patterns.
-
+Progetto personale per imparare e mettere in pratica le competenze full-stack con MERN.

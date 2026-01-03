@@ -24,11 +24,12 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white/80 backdrop-blur-lg shadow-lg border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <header className="navbar bg-base-100 shadow-lg sticky top-0 z-50">
+      <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex items-center justify-between">
         <Link
           to="/"
-          className="text-2xl font-bold text-gradient hover:scale-105 transition-transform duration-200"
+          className="text-2xl font-bold text-primary hover:opacity-80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg px-2 -ml-2"
+          aria-label="Home"
         >
           Social Network
         </Link>
@@ -37,10 +38,11 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-4">
             <Link
               to={`/profile/${user.id}`}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity rounded-lg p-1 -ml-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              aria-label={`Profilo di ${user.username}`}
             >
               <Avatar src={user.avatar} alt={user.username} size="sm" />
-              <span className="text-gray-700 font-semibold hidden sm:block">
+              <span className="text-base-content font-semibold hidden sm:block text-sm">
                 {user.username}
               </span>
             </Link>

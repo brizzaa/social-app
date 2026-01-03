@@ -37,48 +37,39 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
   const remainingChars = POST_MAX_LENGTH - content.length;
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-4 md:mb-6">
       <form onSubmit={handleSubmit}>
-        <div className="flex items-start gap-3 mb-4">
-          <div className="flex-1">
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Cosa stai pensando?"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200 bg-gray-50 hover:bg-white"
-              rows={4}
-              maxLength={POST_MAX_LENGTH}
-            />
-          </div>
+        <div className="form-control">
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Cosa stai pensando?"
+            className="textarea textarea-bordered w-full resize-none min-h-[100px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200"
+            rows={4}
+            maxLength={POST_MAX_LENGTH}
+            aria-label="Contenuto del post"
+          />
         </div>
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <div
               className={`text-sm font-medium ${
                 remainingChars < 20
-                  ? 'text-red-500'
+                  ? 'text-error'
                   : remainingChars < 50
-                  ? 'text-yellow-500'
-                  : 'text-gray-500'
+                  ? 'text-warning'
+                  : 'text-base-content/70'
               }`}
             >
               {remainingChars} caratteri rimanenti
             </div>
             {error && (
-              <p className="text-red-500 text-sm font-medium flex items-center gap-1">
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
+              <div className="alert alert-error alert-sm py-1">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                {error}
-              </p>
+                <span className="text-xs">{error}</span>
+              </div>
             )}
           </div>
           <Button

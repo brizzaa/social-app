@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { IUser, User } from '../models/User';
+import { User } from '../models/User';
 import { generateAccessToken, generateRefreshToken, TokenPayload } from '../utils/jwt';
 import { createError } from '../middlewares/errorHandler';
 
@@ -128,4 +128,3 @@ export const refreshAccessToken = async (refreshToken: string): Promise<string> 
     throw createError('Invalid refresh token', 401);
   }
 };
-

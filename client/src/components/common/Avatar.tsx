@@ -28,7 +28,7 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <div
-      className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center overflow-hidden ring-2 ring-white shadow-lg ${className}`}
+      className={`${sizeClasses[size]} rounded-full bg-primary flex items-center justify-center overflow-hidden ring-2 ring-white shadow-lg ${className}`}
     >
       {src ? (
         <img

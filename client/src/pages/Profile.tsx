@@ -107,17 +107,17 @@ const Profile: React.FC = () => {
   const isOwnProfile = currentUser?.id === profile.id;
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <Card className="mb-6">
-        <div className="flex items-start gap-6">
+    <div className="max-w-2xl mx-auto px-4 md:px-6">
+      <Card className="mb-4 md:mb-6 mt-4 md:mt-6">
+        <div className="flex items-start gap-4 md:gap-6">
           <Avatar src={profile.avatar} alt={profile.username} size="lg" />
-          <div className="flex-1">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-1">
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+              <div className="min-w-0">
+                <h1 className="text-3xl font-bold text-base-content mb-1 tracking-tight truncate">
                   {profile.username}
                 </h1>
-                <p className="text-gray-600">{profile.email}</p>
+                <p className="text-base-content/60 text-sm md:text-base truncate">{profile.email}</p>
               </div>
               {!isOwnProfile && (
                 <FollowButton
@@ -127,18 +127,18 @@ const Profile: React.FC = () => {
                 />
               )}
             </div>
-            <div className="flex gap-8 pt-4 border-t border-gray-100">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">
+            <div className="flex gap-6 md:gap-8 pt-4 border-t border-base-300 w-full sm:w-auto">
+              <div className="text-center hover:opacity-80 transition-opacity cursor-default">
+                <div className="text-2xl font-bold text-base-content">
                   {profile.followersCount || 0}
                 </div>
-                <div className="text-sm text-gray-600 font-medium">Follower</div>
+                <div className="text-xs md:text-sm text-base-content/60 font-medium uppercase tracking-wide">Follower</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900">
+              <div className="text-center hover:opacity-80 transition-opacity cursor-default">
+                <div className="text-2xl font-bold text-base-content">
                   {profile.followingCount || 0}
                 </div>
-                <div className="text-sm text-gray-600 font-medium">Seguiti</div>
+                <div className="text-xs md:text-sm text-base-content/60 font-medium uppercase tracking-wide">Seguiti</div>
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@ const Profile: React.FC = () => {
       </Card>
 
       <div>
-        <h2 className="text-2xl font-bold mb-6 text-gray-900">Post</h2>
+        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-base-content tracking-tight">Post</h2>
         {isLoadingPosts ? (
           <div className="flex justify-center py-12">
             <Spinner size="lg" />

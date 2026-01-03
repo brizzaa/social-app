@@ -105,10 +105,10 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gradient mb-2">Bacheca</h1>
-        <p className="text-gray-600">Vedi cosa sta succedendo nella tua rete</p>
+    <div className="max-w-2xl mx-auto px-4 md:px-6">
+      <div className="mb-6 md:mb-8 pt-4 md:pt-6">
+        <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2 tracking-tight">Bacheca</h1>
+        <p className="text-base-content/70 text-sm md:text-base">Vedi cosa sta succedendo nella tua rete</p>
       </div>
       <PostForm onSubmit={handleCreatePost} isLoading={isCreating} />
       <PostList
