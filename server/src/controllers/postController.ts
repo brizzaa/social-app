@@ -62,9 +62,10 @@ export const getFeedPosts = async (
         const currentUserId = req.userId!;
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
-        const filter = (req.query.type as 'all' | 'following') || 'following';
+        const filter = (req.query.type as 'all' | 'following' | 'user') || 'following';
+        const targetUserId = req.query.userId as string;
 
-        const result = await getFeed(currentUserId, page, limit, filter);
+        const result = await getFeed(currentUserId, page, limit, filter, targetUserId);
 
         res.status(200).json({
             success: true,

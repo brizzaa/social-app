@@ -70,14 +70,15 @@ export const getFeed = async (
     currentUserId: string,
     page: number = 1,
     limit: number = 10,
-    filter: 'all' | 'following' = 'following'
+    filter: 'all' | 'following' | 'user' = 'following',
+    targetUserId?: string
 ): Promise<PaginatedPosts> => {
     const currentUser = await User.findById(currentUserId);
     if (!currentUser) {
         throw createError('Utente non trovato', 404);
     }
 
-    let query = {};
+    let query: any = {};
 
     if (filter === 'following') {
         // Get posts from users that current user follows
@@ -85,6 +86,8 @@ export const getFeed = async (
         // Always include own posts in following feed
         followingIds.push(currentUserId);
         query = { author: { $in: followingIds } };
+    } else if (filter === 'user' && targetUserId) {
+        query = { author: targetUserId };
     }
     // if filter is 'all', query stays empty {} which means all posts
 
