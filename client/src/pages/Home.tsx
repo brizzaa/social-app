@@ -7,119 +7,149 @@ import api from '../services/api';
 import { API_ENDPOINTS } from '../utils/constants';
 
 const Home: React.FC = () => {
-  const { user } = useAppSelector((state) => state.auth);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+    const { user } = useAppSelector((state) => state.auth);
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
-  const loadPosts = useCallback(async (pageNum: number = 1, append: boolean = false) => {
-    if (isLoading) return;
+    const [activeTab, setActiveTab] = useState<'all' | 'following'>('following');
 
-    setIsLoading(true);
-    try {
-      const response = await api.get<{ data: PaginatedPosts }>(
-        `${API_ENDPOINTS.POSTS.FEED}?page=${pageNum}&limit=10`
-      );
-      const { posts: newPosts, hasMore: more } = response.data.data;
+    const loadPosts = useCallback(async (pageNum: number = 1, append: boolean = false, type: 'all' | 'following' = activeTab) => {
+        if (isLoading && append) return;
 
-      if (append) {
-        setPosts((prev) => [...prev, ...newPosts]);
-      } else {
-        setPosts(newPosts);
-      }
+        setIsLoading(true);
+        try {
+            const response = await api.get<{ data: PaginatedPosts }>(
+                `${API_ENDPOINTS.POSTS.FEED}?page=${pageNum}&limit=10&type=${type}`
+            );
+            const { posts: newPosts, hasMore: more } = response.data.data;
 
-      setHasMore(more);
-      setPage(pageNum);
-    } catch (error) {
-      console.error('Failed to load posts:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isLoading]);
+            if (append) {
+                setPosts((prev) => [...prev, ...newPosts]);
+            } else {
+                setPosts(newPosts);
+            }
 
-  useEffect(() => {
-    loadPosts(1, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+            setHasMore(more);
+            setPage(pageNum);
+        } catch (error) {
+            console.error('Failed to load posts:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [activeTab, isLoading]);
 
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 100 &&
-      hasMore &&
-      !isLoading
-    ) {
-      loadPosts(page + 1, true);
-    }
-  }, [hasMore, isLoading, page, loadPosts]);
+    useEffect(() => {
+        loadPosts(1, false, activeTab);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeTab]);
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
+    const handleTabChange = (tab: 'all' | 'following') => {
+        if (tab === activeTab) return;
+        setActiveTab(tab);
+        setPosts([]);
+        setPage(1);
+        setHasMore(true);
+    };
 
-  const handleCreatePost = async (content: string) => {
-    setIsCreating(true);
-    try {
-      const response = await api.post(API_ENDPOINTS.POSTS.CREATE, { content });
-      const newPost = response.data.data;
-      setPosts((prev) => [newPost, ...prev]);
-    } catch (error) {
-      console.error('Failed to create post:', error);
-      throw error;
-    } finally {
-      setIsCreating(false);
-    }
-  };
+    const handleScroll = useCallback(() => {
+        if (
+            window.innerHeight + document.documentElement.scrollTop >=
+            document.documentElement.offsetHeight - 100 &&
+            hasMore &&
+            !isLoading
+        ) {
+            loadPosts(page + 1, true);
+        }
+    }, [hasMore, isLoading, page, loadPosts]);
 
-  const handleLike = async (postId: string) => {
-    try {
-      const response = await api.post(API_ENDPOINTS.POSTS.LIKE(postId));
-      const { isLiked } = response.data.data;
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
 
-      setPosts((prev) =>
-        prev.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                isLiked,
-                likesCount: isLiked ? post.likesCount + 1 : post.likesCount - 1,
-              }
-            : post
-        )
-      );
-    } catch (error) {
-      console.error('Failed to like post:', error);
-    }
-  };
+    const handleCreatePost = async (content: string) => {
+        setIsCreating(true);
+        try {
+            const response = await api.post(API_ENDPOINTS.POSTS.CREATE, { content });
+            const newPost = response.data.data;
+            if (activeTab === 'following') {
+                setPosts((prev) => [newPost, ...prev]);
+            }
+        } catch (error) {
+            console.error('Failed to create post:', error);
+            throw error;
+        } finally {
+            setIsCreating(false);
+        }
+    };
 
-  const handleDelete = async (postId: string) => {
-    try {
-      await api.delete(API_ENDPOINTS.POSTS.DELETE(postId));
-      setPosts((prev) => prev.filter((post) => post.id !== postId));
-    } catch (error) {
-      console.error('Failed to delete post:', error);
-    }
-  };
+    const handleLike = async (postId: string) => {
+        try {
+            const response = await api.post(API_ENDPOINTS.POSTS.LIKE(postId));
+            const { isLiked } = response.data.data;
 
-  return (
-    <div className="max-w-2xl mx-auto px-4 md:px-6">
-      <div className="mb-6 md:mb-8 pt-4 md:pt-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2 tracking-tight">Bacheca</h1>
-        <p className="text-base-content/70 text-sm md:text-base">Vedi cosa sta succedendo nella tua rete</p>
-      </div>
-      <PostForm onSubmit={handleCreatePost} isLoading={isCreating} />
-      <PostList
-        posts={posts}
-        onLike={handleLike}
-        onDelete={handleDelete}
-        currentUserId={user?.id}
-        isLoading={isLoading && posts.length > 0}
-      />
-    </div>
-  );
+            setPosts((prev) =>
+                prev.map((post) =>
+                    post.id === postId
+                        ? {
+                            ...post,
+                            isLiked,
+                            likesCount: isLiked ? post.likesCount + 1 : post.likesCount - 1,
+                        }
+                        : post
+                )
+            );
+        } catch (error) {
+            console.error('Failed to like post:', error);
+        }
+    };
+
+    const handleDelete = async (postId: string) => {
+        try {
+            await api.delete(API_ENDPOINTS.POSTS.DELETE(postId));
+            setPosts((prev) => prev.filter((post) => post.id !== postId));
+        } catch (error) {
+            console.error('Failed to delete post:', error);
+        }
+    };
+
+    return (
+        <div className="max-w-2xl mx-auto px-4 md:px-6">
+            <div className="mb-6 md:mb-8 pt-4 md:pt-6 sticky top-[60px] z-40 bg-base-100/95 backdrop-blur-sm -mx-4 px-4 md:-mx-6 md:px-6 border-b border-base-200">
+                <div className="flex gap-8">
+                    <button
+                        className={`pb-3 text-sm font-semibold transition-all relative ${activeTab === 'following' ? 'text-primary' : 'text-base-content/60 hover:text-base-content'}`}
+                        onClick={() => handleTabChange('following')}
+                    >
+                        Seguiti
+                        {activeTab === 'following' && (
+                            <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full" />
+                        )}
+                    </button>
+                    <button
+                        className={`pb-3 text-sm font-semibold transition-all relative ${activeTab === 'all' ? 'text-primary' : 'text-base-content/60 hover:text-base-content'}`}
+                        onClick={() => handleTabChange('all')}
+                    >
+                        Esplora
+                        {activeTab === 'all' && (
+                            <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full" />
+                        )}
+                    </button>
+                </div>
+            </div>
+            <PostForm onSubmit={handleCreatePost} isLoading={isCreating} />
+            <PostList
+                posts={posts}
+                onLike={handleLike}
+                onDelete={handleDelete}
+                currentUserId={user?.id}
+                isLoading={isLoading && posts.length > 0}
+            />
+        </div>
+    );
 };
 
 export default Home;
