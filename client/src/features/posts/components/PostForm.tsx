@@ -53,13 +53,12 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
 
                 <div className="border-t border-base-200 px-0 pt-3 flex items-center justify-between mt-2">
                     <div className="flex items-center gap-4">
-                        {/* Future: Add image/media buttons here */}
                         <div
                             className={`text-xs font-medium transition-colors ${remainingChars < 20
-                                    ? 'text-error'
-                                    : remainingChars < 50
-                                        ? 'text-warning'
-                                        : 'text-base-content/40'
+                                ? 'text-error'
+                                : remainingChars < 50
+                                    ? 'text-warning'
+                                    : 'text-base-content/40'
                                 }`}
                         >
                             {remainingChars}

@@ -66,16 +66,16 @@ export const PostCard: React.FC<PostCardProps> = ({
                         <button
                             onClick={() => onLike(post.id)}
                             className={`group/like flex items-center gap-2 text-sm transition-colors duration-200 ${post.isLiked
-                                    ? 'text-accent'
-                                    : 'text-base-content/50 hover:text-accent'
+                                ? 'text-accent'
+                                : 'text-base-content/50 hover:text-accent'
                                 }`}
                         >
                             <div className={`p-2 rounded-full transition-colors ${post.isLiked ? 'bg-accent/10' : 'group-hover/like:bg-accent/10'
                                 }`}>
                                 <svg
                                     className={`w-5 h-5 transition-transform duration-200 ${post.isLiked
-                                            ? 'fill-current scale-110'
-                                            : 'scale-100 group-active/like:scale-90'
+                                        ? 'fill-current scale-110'
+                                        : 'scale-100 group-active/like:scale-90'
                                         }`}
                                     fill={post.isLiked ? 'currentColor' : 'none'}
                                     stroke="currentColor"
@@ -94,7 +94,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                             </span>
                         </button>
 
-                        {/* Future: Add Reply/Share buttons here for a fuller row */}
+
                     </div>
                 </div>
             </div>

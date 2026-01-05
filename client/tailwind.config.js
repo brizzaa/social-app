@@ -37,14 +37,13 @@ export default {
         themes: [
             {
                 'social-light': {
-                    "primary": "#4F46E5", // Indigo-600
-                    "secondary": "#10B981", // Emerald-500
-                    "accent": "#F43F5E", // Rose-500
-                    "neutral": "#1F2937", // Gray-800
+                    "primary": "#4F46E5",
+                    "secondary": "#10B981",
+                    "accent": "#F43F5E",
+                    "neutral": "#1F2937",
                     "base-100": "#ffffff",
-                    "base-200": "#F3F4F6", // Gray-100 (Background)
-                    "base-300": "#E5E7EB", // Gray-200 (Borders)
-
+                    "base-200": "#F3F4F6",
+                    "base-300": "#E5E7EB",
                     "--rounded-box": "1rem",
                     "--rounded-btn": "0.5rem",
                     "--rounded-badge": "1.9rem",
@@ -56,13 +55,13 @@ export default {
                     "--tab-radius": "0.5rem",
                 },
                 'social-dark': {
-                    "primary": "#6366f1", // Indigo-500
-                    "secondary": "#34d399", // Emerald-400
-                    "accent": "#fb7185", // Rose-400
-                    "neutral": "#F3F4F6", // Gray-100
-                    "base-100": "#111827", // Gray-900
-                    "base-200": "#1f2937", // Gray-800
-                    "base-300": "#374151", // Gray-700
+                    "primary": "#6366f1",
+                    "secondary": "#34d399",
+                    "accent": "#fb7185",
+                    "neutral": "#F3F4F6",
+                    "base-100": "#111827",
+                    "base-200": "#1f2937",
+                    "base-300": "#374151",
 
                     "--rounded-box": "1rem",
                     "--rounded-btn": "0.5rem",

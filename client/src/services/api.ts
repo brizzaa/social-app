@@ -11,7 +11,6 @@ const api = axios.create({
     },
 });
 
-// Request interceptor to add access token
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         const state = store.getState();
@@ -28,18 +27,15 @@ api.interceptors.request.use(
     }
 );
 
-// Response interceptor to handle token refresh
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
         const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-        // If error is 401 and we haven't retried yet
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
             try {
-                // Try to refresh the token
                 const response = await axios.post(
                     `${API_URL}/auth/refresh`,
                     {},
@@ -49,14 +45,14 @@ api.interceptors.response.use(
                 const { accessToken } = response.data.data;
                 store.dispatch(setAccessToken(accessToken));
 
-                // Retry the original request with new token
+
                 if (originalRequest.headers) {
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 }
 
                 return api(originalRequest);
             } catch (refreshError) {
-                // Refresh failed, logout user
+
                 store.dispatch(logout());
                 window.location.href = '/login';
                 return Promise.reject(refreshError);
