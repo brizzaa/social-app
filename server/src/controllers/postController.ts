@@ -16,11 +16,18 @@ export const create = async (
     try {
         const { content } = req.body;
         const authorId = req.userId!;
+        const file = req.file;
 
         const post = await createPost({
             author: authorId,
             content,
+            media: file ? {
+                url: `/uploads/${file.filename}`,
+                type: file.mimetype.startsWith('video') ? 'video' : 'image'
+            } : undefined
         });
+
+        console.log('Post created with media:', post.mediaUrl, post.mediaType);
 
         const postWithAuthor = await getPostById(post._id.toString(), authorId);
 

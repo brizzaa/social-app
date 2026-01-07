@@ -3,6 +3,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IPost extends Document {
     author: mongoose.Types.ObjectId;
     content: string;
+    mediaUrl?: string;
+    mediaType?: 'image' | 'video';
     likes: mongoose.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
@@ -21,6 +23,15 @@ const postSchema = new Schema<IPost>(
             required: true,
             maxlength: 280,
             trim: true,
+        },
+        mediaUrl: {
+            type: String,
+            default: null,
+        },
+        mediaType: {
+            type: String,
+            enum: ['image', 'video'],
+            default: null,
         },
         likes: [
             {

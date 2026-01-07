@@ -70,10 +70,16 @@ const Home: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
 
-    const handleCreatePost = async (content: string) => {
+    const handleCreatePost = async (content: string, video?: File) => {
         setIsCreating(true);
         try {
-            const response = await api.post(API_ENDPOINTS.POSTS.CREATE, { content });
+            const formData = new FormData();
+            formData.append('content', content);
+            if (video) {
+                formData.append('media', video);
+            }
+
+            const response = await api.post(API_ENDPOINTS.POSTS.CREATE, formData);
             const newPost = response.data.data;
             if (activeTab === 'following') {
                 setPosts((prev) => [newPost, ...prev]);

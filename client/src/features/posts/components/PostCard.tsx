@@ -4,6 +4,7 @@ import { Post } from '../../../types';
 import { Avatar } from '../../../components/common/Avatar';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
+import { BASE_URL } from '../../../utils/constants';
 
 interface PostCardProps {
     post: Post;
@@ -61,6 +62,26 @@ export const PostCard: React.FC<PostCardProps> = ({
                     <p className="text-base-content/90 mb-3 whitespace-pre-wrap leading-relaxed text-[15px] break-words">
                         {post.content}
                     </p>
+
+                    {post.mediaUrl && (
+                        <div className="mb-4 rounded-xl overflow-hidden border border-base-200 bg-base-200/50">
+                            {post.mediaType === 'video' ? (
+                                <video
+                                    src={`${BASE_URL}${post.mediaUrl}`}
+                                    controls
+                                    className="w-full h-auto max-h-[500px] object-contain"
+                                >
+                                    Il tuo browser non supporta il tag video.
+                                </video>
+                            ) : (
+                                <img
+                                    src={`${BASE_URL}${post.mediaUrl}`}
+                                    alt="Post media"
+                                    className="w-full h-auto max-h-[500px] object-cover"
+                                />
+                            )}
+                        </div>
+                    )}
 
                     <div className="flex items-center gap-6">
                         <button

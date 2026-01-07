@@ -5,11 +5,17 @@ import { createError } from '../middlewares/errorHandler';
 export interface PostData {
     author: string;
     content: string;
+    media?: {
+        url: string;
+        type: 'image' | 'video';
+    };
 }
 
 export interface PostWithAuthor {
     id: string;
     content: string;
+    mediaUrl?: string;
+    mediaType?: 'image' | 'video';
     author: {
         id: string;
         username: string;
@@ -33,6 +39,8 @@ export const createPost = async (data: PostData): Promise<IPost> => {
     const post = new Post({
         author: data.author,
         content: data.content,
+        mediaUrl: data.media?.url,
+        mediaType: data.media?.type,
     });
 
     await post.save();
@@ -54,6 +62,8 @@ export const getPostById = async (
     return {
         id: post._id.toString(),
         content: post.content,
+        mediaUrl: post.mediaUrl,
+        mediaType: post.mediaType,
         author: {
             id: author._id.toString(),
             username: author.username,
@@ -109,6 +119,8 @@ export const getFeed = async (
         return {
             id: post._id.toString(),
             content: post.content,
+            mediaUrl: post.mediaUrl,
+            mediaType: post.mediaType,
             author: {
                 id: author._id.toString(),
                 username: author.username,
