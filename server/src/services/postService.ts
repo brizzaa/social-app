@@ -152,6 +152,12 @@ export const deletePost = async (postId: string, authorId: string): Promise<void
         throw createError('Not authorized to delete this post', 403);
     }
 
+    // Delete media from Cloudinary if exists
+    if (post.mediaUrl) {
+        const { deleteCloudinaryMedia } = await import('./cloudinaryService');
+        await deleteCloudinaryMedia(post.mediaUrl);
+    }
+
     await Post.findByIdAndDelete(postId);
 };
 

@@ -1,20 +1,24 @@
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary';
 
-// Ensure uploads directory exists
-const uploadDir = 'uploads';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
+// Configure Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: async (_req, file) => {
+        // Determine if it's a video or image
+        const isVideo = file.mimetype.startsWith('video/');
 
-const storage = multer.diskStorage({
-    destination: function (_req, _file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function (_req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
+        return {
+            folder: 'social-app', // Folder name in Cloudinary
+            resource_type: isVideo ? 'video' : 'image',
+            allowed_formats: isVideo
+                ? ['mp4', 'mov', 'avi', 'mkv', 'webm']
+                : ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+            transformation: isVideo
+                ? [{ quality: 'auto', fetch_format: 'auto' }]
+                : [{ quality: 'auto', fetch_format: 'auto', width: 1200, crop: 'limit' }],
+        };
     },
 });
 
@@ -30,6 +34,6 @@ export const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 50 * 1024 * 1024, // 50MB limit
+        fileSize: 100 * 1024 * 1024, // 100MB limit for videos
     },
 });

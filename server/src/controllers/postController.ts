@@ -16,13 +16,13 @@ export const create = async (
     try {
         const { content } = req.body;
         const authorId = req.userId!;
-        const file = req.file;
+        const file = req.file as Express.Multer.File & { path?: string };
 
         const post = await createPost({
             author: authorId,
             content,
             media: file ? {
-                url: `/uploads/${file.filename}`,
+                url: file.path || '', // Cloudinary provides the full URL in file.path
                 type: file.mimetype.startsWith('video') ? 'video' : 'image'
             } : undefined
         });

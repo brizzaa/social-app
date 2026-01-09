@@ -88,7 +88,7 @@ export const refresh = async (
 };
 
 export const logout = async (
-    req: AuthRequest,
+    _req: AuthRequest,
     res: Response,
     next: NextFunction
 ): Promise<void> => {

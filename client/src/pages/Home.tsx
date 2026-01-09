@@ -70,7 +70,7 @@ const Home: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll]);
 
-    const handleCreatePost = async (content: string, video?: File) => {
+    const handleCreatePost = async (content: string, video?: File, onProgress?: (p: number) => void) => {
         setIsCreating(true);
         try {
             const formData = new FormData();
@@ -79,7 +79,14 @@ const Home: React.FC = () => {
                 formData.append('media', video);
             }
 
-            const response = await api.post(API_ENDPOINTS.POSTS.CREATE, formData);
+            const response = await api.post(API_ENDPOINTS.POSTS.CREATE, formData, {
+                onUploadProgress: (progressEvent) => {
+                    if (onProgress && progressEvent.total) {
+                        const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        onProgress(progress);
+                    }
+                }
+            });
             const newPost = response.data.data;
             if (activeTab === 'following') {
                 setPosts((prev) => [newPost, ...prev]);

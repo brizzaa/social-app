@@ -87,6 +87,20 @@ const Profile: React.FC = () => {
         }
     };
 
+    const handleDelete = async (postId: string) => {
+        if (!window.confirm('Sei sicuro di voler eliminare questo post?')) {
+            return;
+        }
+
+        try {
+            await api.delete(API_ENDPOINTS.POSTS.DELETE(postId));
+            setPosts((prev) => prev.filter((post) => post.id !== postId));
+        } catch (error) {
+            console.error('Impossibile eliminare il post:', error);
+            alert('Errore durante l\'eliminazione del post');
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="flex justify-center py-8">
@@ -150,6 +164,7 @@ const Profile: React.FC = () => {
                     <PostList
                         posts={posts}
                         onLike={handleLike}
+                        onDelete={isOwnProfile ? handleDelete : undefined}
                         currentUserId={currentUser?.id}
                     />
                 )}

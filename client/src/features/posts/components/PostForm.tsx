@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { POST_MAX_LENGTH } from '../../../utils/constants';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
+import { UploadProgressBar } from '../../../components/ui/UploadProgressBar';
 
 interface PostFormProps {
-    onSubmit: (content: string, video?: File) => Promise<void>;
+    onSubmit: (content: string, video?: File, onProgress?: (p: number) => void) => Promise<void>;
     isLoading?: boolean;
 }
 
@@ -13,6 +14,8 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
     const [video, setVideo] = useState<File | null>(null);
     const [videoPreview, setVideoPreview] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isAnimating, setIsAnimating] = useState(false);
 
     const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -50,18 +53,27 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
         }
 
         try {
-            await onSubmit(content, video || undefined);
+            setUploadProgress(0);
+            setIsAnimating(false);
+
+            await onSubmit(content, video || undefined, (progress) => {
+                setUploadProgress(progress);
+                if (progress > 0) setIsAnimating(true);
+            });
+
             setContent('');
             removeVideo();
         } catch (err) {
             setError('Impossibile creare il post. Per favore, riprova.');
+            setUploadProgress(0);
+            setIsAnimating(false);
         }
     };
 
     const remainingChars = POST_MAX_LENGTH - content.length;
 
     return (
-        <Card className="mb-6 md:mb-8 border border-base-200 shadow-soft bg-base-100/50 backdrop-blur-sm">
+        <Card className="mb-6 md:mb-8 border border-base-200 shadow-soft bg-base-100/50 backdrop-blur-sm overflow-hidden">
             <form onSubmit={handleSubmit} className="relative">
                 <div className="form-control w-full group">
                     <textarea
@@ -120,15 +132,26 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
                         {error && (
                             <span className="text-error text-xs font-medium animate-fade-in">{error}</span>
                         )}
-                        <Button
-                            type="submit"
-                            isLoading={isLoading}
-                            disabled={!content.trim() && !video}
-                            size="md"
-                            className="rounded-full px-6 bg-primary hover:bg-primary-focus text-white border-none shadow-md shadow-primary/20"
-                        >
-                            Pubblica
-                        </Button>
+                        {isAnimating || isLoading ? (
+                            <UploadProgressBar
+                                progress={uploadProgress}
+                                isUploading={isLoading}
+                                onComplete={() => {
+                                    setUploadProgress(0);
+                                    setIsAnimating(false);
+                                }}
+                            />
+                        ) : (
+                            <Button
+                                type="submit"
+                                isLoading={isLoading}
+                                disabled={!content.trim() && !video}
+                                size="md"
+                                className="rounded-full px-6 bg-primary hover:bg-primary-focus text-white border-none shadow-md shadow-primary/20"
+                            >
+                                Pubblica
+                            </Button>
+                        )}
                     </div>
                 </div>
             </form>
