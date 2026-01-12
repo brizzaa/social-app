@@ -10,12 +10,35 @@ export const UploadProgressBar: React.FC<ProgressBarProps> = ({ progress, isUplo
     const [isVisible, setIsVisible] = useState(isUploading);
     const [isFinished, setIsFinished] = useState(false);
 
+    const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+    const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
+
+    // Reset loop
     useEffect(() => {
         if (isUploading) {
             setIsVisible(true);
             setIsFinished(false);
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
         }
+    }, [isUploading]);
 
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+            if (intervalRef.current) clearInterval(intervalRef.current);
+        };
+    }, []);
+
+    // Completion logic
+    useEffect(() => {
         if (progress === 100 && !isFinished) {
             setIsFinished(true);
 
@@ -26,9 +49,12 @@ export const UploadProgressBar: React.FC<ProgressBarProps> = ({ progress, isUplo
 
             const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
 
-            const interval: any = setInterval(async () => {
+            intervalRef.current = setInterval(async () => {
                 const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
+                if (timeLeft <= 0 && intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                    return;
+                }
 
                 try {
                     const confetti = (await import('canvas-confetti')).default;
@@ -39,19 +65,16 @@ export const UploadProgressBar: React.FC<ProgressBarProps> = ({ progress, isUplo
                 }
             }, 250);
 
-            const timer = setTimeout(() => {
+            // Set timer to hide and callback
+            // We use a ref so this timer survives the re-render caused by setIsFinished(true)
+            timerRef.current = setTimeout(() => {
                 setIsVisible(false);
                 setTimeout(() => {
                     if (onComplete) onComplete();
                 }, 200);
             }, 1000);
-
-            return () => {
-                clearInterval(interval);
-                clearTimeout(timer);
-            };
         }
-    }, [progress, isUploading, onComplete, isFinished]);
+    }, [progress, isFinished, onComplete]);
 
     if (!isVisible && !isUploading && !isFinished) return null;
 

@@ -88,9 +88,7 @@ const Home: React.FC = () => {
                 }
             });
             const newPost = response.data.data;
-            if (activeTab === 'following') {
-                setPosts((prev) => [newPost, ...prev]);
-            }
+            setPosts((prev) => [newPost, ...prev]);
         } catch (error) {
             console.error('Failed to create post:', error);
             throw error;

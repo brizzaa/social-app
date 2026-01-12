@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { POST_MAX_LENGTH } from '../../../utils/constants';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
@@ -38,6 +38,11 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
         }
     };
 
+    const handleComplete = useCallback(() => {
+        setUploadProgress(0);
+        setIsAnimating(false);
+    }, []);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -60,6 +65,10 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
                 setUploadProgress(progress);
                 if (progress > 0) setIsAnimating(true);
             });
+
+            // Assicuriamoci che la barra arrivi al 100% e mostri il successo
+            setUploadProgress(100);
+            setIsAnimating(true);
 
             setContent('');
             removeVideo();
@@ -136,10 +145,7 @@ export const PostForm: React.FC<PostFormProps> = ({ onSubmit, isLoading = false 
                             <UploadProgressBar
                                 progress={uploadProgress}
                                 isUploading={isLoading}
-                                onComplete={() => {
-                                    setUploadProgress(0);
-                                    setIsAnimating(false);
-                                }}
+                                onComplete={handleComplete}
                             />
                         ) : (
                             <Button
