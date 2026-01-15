@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { isAxiosError } from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { setCredentials } from '../store/slices/authSlice';
@@ -41,8 +42,11 @@ const Login: React.FC = () => {
 
       dispatch(setCredentials({ user, accessToken }));
       navigate('/');
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.error || 'Accesso fallito. Per favore, riprova.';
+    } catch (err: unknown) {
+      let errorMessage = 'Accesso fallito. Per favore, riprova.';
+      if (isAxiosError(err) && err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      }
       setLocalError(errorMessage);
       dispatch(setError(errorMessage));
     } finally {

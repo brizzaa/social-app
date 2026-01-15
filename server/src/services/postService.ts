@@ -1,3 +1,5 @@
+import { FilterQuery } from 'mongoose';
+
 import { IPost, Post } from '../models/Post';
 import { User } from '../models/User';
 import { createError } from '../middlewares/errorHandler';
@@ -56,6 +58,7 @@ export const getPostById = async (
         throw createError('Post non trovato', 404);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const author = post.author as any;
     const isLiked = currentUserId ? post.likes.some((id) => id.toString() === currentUserId) : false;
 
@@ -88,7 +91,7 @@ export const getFeed = async (
         throw createError('Utente non trovato', 404);
     }
 
-    let query: any = {};
+    let query: FilterQuery<IPost> = {};
 
     if (filter === 'following') {
         // Get posts from users that current user follows
@@ -113,6 +116,7 @@ export const getFeed = async (
     ]);
 
     const postsWithAuthor: PostWithAuthor[] = posts.map((post) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const author = post.author as any;
         const isLiked = post.likes.some((id) => id.toString() === currentUserId);
 
@@ -175,7 +179,7 @@ export const toggleLike = async (postId: string, userId: string): Promise<boolea
         post.likes = post.likes.filter((id) => id.toString() !== userId);
     } else {
         // Like
-        post.likes.push(userId as any);
+        post.likes.push(userId as unknown as import('mongoose').Types.ObjectId);
     }
 
     await post.save();
